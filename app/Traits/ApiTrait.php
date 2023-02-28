@@ -42,28 +42,27 @@ $array = array_flip(['name', 'released','genres']);
 
         $api_response_resutls = $api_response['results'];
         $required_fields = array_flip(['name', 'background_image', 'rating', 'released', 'genres',]);
-       /* dd($api_response_resutls);*/
-$api_elements = [];
-foreach ($api_response_resutls as $key => $array){
+        /* dd($api_response_resutls);*/
+        $api_elements = [];
+        foreach ($api_response_resutls as $outerkey => $array) {
 
-    foreach ($array as $k =>$item){
-
-   
-        if (array_key_exists($k, $required_fields)) {
+            foreach ($array as $innerkey => $item) {
 
 
-
-
-            $api_elements[$key][$k] = $array[$k];
+                if (array_key_exists($innerkey, $required_fields)) {
 
 
 
 
+                    $api_elements[$outerkey][$innerkey] = $array[$innerkey];
+                }
+                if (isset($api_response_resutls['genres'])) {
 
-    }
-}
-}
-/*
+                    break;
+                }
+            }
+        }
+        /*
 
 
         $api_required_elements = array_map(
@@ -102,7 +101,7 @@ foreach ($api_response_resutls as $key => $array){
 
 
         /*$gamescollection = collect($api_response);*/
-       return   $api_elements;
-var_dump($api_elements);
-   
-}}
+        return   $api_elements;
+        var_dump($api_elements);
+    }
+}

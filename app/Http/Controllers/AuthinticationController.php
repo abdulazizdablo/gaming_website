@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\SignUpRequest;
 use Illuminate\Http\Request;
 use Hash;
 use Session;
@@ -24,12 +26,12 @@ class AuthinticationController extends Controller
         return view('auth.login');
     }
 
-    public function customLogin(Request $request)
+    public function customLogin(LoginRequest $request)
     {
-        $request->validate([
+        /*$request->validate([
             'email' => 'required',
             'password' => 'required',
-        ]);
+        ]);*/
 
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
@@ -45,14 +47,14 @@ class AuthinticationController extends Controller
         return view('auth.registration');
     }
 
-    public function customRegistration(Request $request)
+    public function customRegistration(SignUpRequest $request)
     {
-        $request->validate([
+      /*  $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
             'roles'  => 'required'
-        ]);
+        ]);*/
 
         $data = $request->all();
         $check = $this->create($data);
