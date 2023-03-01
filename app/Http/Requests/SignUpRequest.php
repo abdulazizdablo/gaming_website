@@ -27,7 +27,10 @@ class SignUpRequest extends FormRequest
             'first_name' => 'required|max:50',
             'last_name' => 'required|max:50',
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:8|max:15',
+            'password' =>  array(
+                'required',
+                'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'
+            ),
             'city' => 'required',
             'image' => 'required',
             'github_acc' => 'required|url',

@@ -8,7 +8,10 @@ use Illuminate\Http\Request;
 use Hash;
 use Session;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Traits\HasRoles;
 use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
 
 class AuthinticationController extends Controller
@@ -49,14 +52,16 @@ class AuthinticationController extends Controller
 
     public function customRegistration(SignUpRequest $request)
     {
-      /*  $request->validate([
+        /*  $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
             'roles'  => 'required'
         ]);*/
 
-        $data = $request->all();
+        // specifying $request inputs not using $request->all() for security meassures thus it would be vunlerable to request attacks
+
+        $data = $request->input(['first_name', 'last_name', 'email', 'password', 'roles']);
         $check = $this->create($data);
 
         return redirect("dashboard")->withSuccess('You have signed-in');
@@ -64,25 +69,32 @@ class AuthinticationController extends Controller
 
     public function create(array $data)
     {
-        return User::create([
+        $user =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password'])
+            'password' => Hash::make($data['password']),
+            /*'roles' =>   auth()->user()->assignRole($data['roles'])*/
+
         ]);
+
+        // using Spatie assignRole to attach the selected role to the registerd user
+
+        $user = $user->assignRole($data['roles']);
+        return $user;
     }
 
-    public function dashboard()
+    /* public function dashboard()
     {
         if (Auth::check()) {
             return view('dashboard');
         }
 
         return redirect("login")->withSuccess('You are not allowed to access');
-    }
+    }*/
 
     public function signOut()
     {
-       Session::flush();
+        Session::flush();
         Auth::logout();
 
         return Redirect('login');
