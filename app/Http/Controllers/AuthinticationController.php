@@ -19,6 +19,8 @@ class AuthinticationController extends Controller
 
     function __construct()
     {
+
+
         $this->middleware('guest', ['only' => ['register']]);
         $this->middleware('auth', ['only' => ['login']]);
     }
@@ -29,7 +31,7 @@ class AuthinticationController extends Controller
         return view('auth.login');
     }
 
-    public function customLogin(LoginRequest $request)
+    public function Login(LoginRequest $request)
     {
         /*$request->validate([
             'email' => 'required',
@@ -50,7 +52,7 @@ class AuthinticationController extends Controller
         return view('auth.registration');
     }
 
-    public function customRegistration(SignUpRequest $request)
+    public function Register(SignUpRequest $request)
     {
         /*  $request->validate([
             'name' => 'required',
@@ -80,6 +82,7 @@ class AuthinticationController extends Controller
         // using Spatie assignRole to attach the selected role to the registerd user
 
         $user = $user->assignRole($data['roles']);
+        
         return $user;
     }
 
