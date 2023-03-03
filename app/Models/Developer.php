@@ -10,6 +10,11 @@ class Developer extends Model
 {
     use HasFactory, HasRoles;
 
+
+    protected $guard = 'developer';
+
+
+
     protected $fillable = ['id', 'name', 'slug',];
 
     public function game()

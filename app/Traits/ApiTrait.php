@@ -17,7 +17,7 @@ trait ApiTrait
             'endpoint' => 'https://api.rawg.io/api/games?',
             'key' => $rapid_api_key
 
-        ])->get('{+endpoint}key={key}');
+        ])->timeout(60)->get('{+endpoint}key={key}');
 
 
 
