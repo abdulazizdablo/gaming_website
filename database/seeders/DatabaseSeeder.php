@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,5 +23,35 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+
+
+        Permission::create(['name' => 'create-users']);
+        Permission::create(['name' => 'edit-users']);
+        Permission::create(['name' => 'delete-users']);
+
+        Permission::create(['name' => 'create-games']);
+        Permission::create(['name' => 'edit-games']);
+        Permission::create(['name' => 'delete-games']);
+
+        $adminRole = Role::create(['name' => 'Admin']);
+        $developerRole = Role::create(['name' => 'Developer']);
+
+        $adminRole->givePermissionTo([
+            'create-users',
+            'edit-users',
+            'delete-users',
+            'create-blog-posts',
+            'edit-blog-posts',
+            'delete-blog-posts',
+        ]);
+
+        $developerRole->givePermissionTo([
+            'create-games',
+            'edit-games',
+            'delete-games',
+        ]);
+
+
     }
 }

@@ -30,7 +30,7 @@ creating eqaution for determining the user best choice*/
         $recommendation_factor = array_count_values($whishlisted_games->genres->toArray());
         $recommendation_factor = arsort($recommendation_factor);
 
-
+         /*$percantage_factor = array_flip()*/
         // array to determine the percentage that the showing games will be priortized
 
         $recommandation_percantage = [
