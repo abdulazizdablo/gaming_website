@@ -14,5 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [GameController::class,'index']);
+Route::get('/', [GameController::class, 'index']);
 
+
+Route::fallback(function () {
+    return redirect('/index');
+});

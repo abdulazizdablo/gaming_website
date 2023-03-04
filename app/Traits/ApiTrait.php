@@ -46,7 +46,11 @@ $array = array_flip(['name', 'released','genres']);
         $api_elements = [];
         foreach ($api_response_resutls as $outerkey => $array) {
 
-            foreach ($array as $innerkey => $item) {
+            $api_elements[$outerkey] = array_intersect($array, $required_fields);
+
+
+
+            /* foreach ($array as $innerkey => $item) {
 
 
                 if (array_key_exists($innerkey, $required_fields)) {
@@ -60,7 +64,7 @@ $array = array_flip(['name', 'released','genres']);
 
                     break;
                 }
-            }
+            }*/
         }
         /*
 

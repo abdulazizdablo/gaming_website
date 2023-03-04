@@ -8,12 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Review extends Model
 {
     use HasFactory;
-    
+
 
     public function revwieable()
     {
-     return $this->morphTo()
-
-
+        return $this->morphTo();
     }
 }

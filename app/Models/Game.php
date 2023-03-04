@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Game extends Model
 {
@@ -13,29 +14,23 @@ class Game extends Model
 
 
 
-   /**
-    * Get the user that owns the Game
-    *
-    * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-    */
-   public function category(): BelongsTo
-   {
-       return $this->belongsTo(Category::class);
-   }
-   public function user ():BelongsTo
-   {
+    /**
+     * Get the user that owns the Game
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+    public function user(): BelongsTo
+    {
 
-    return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
+    }
+    public function review(): MorphToMany
+    {
 
-
-   }
-   public function review():BelongsTo
-   {
-
-    return $this->morphMany(Review::class,);
-
-
-   }
-
-    
+        return $this->morphMany(Review::class, 'reviewable');
+    }
 }
