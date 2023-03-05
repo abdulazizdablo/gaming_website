@@ -7,9 +7,26 @@ use Illuminate\Http\Request;
 
 class FrontendController extends Controller
 {
-   public function about(){
 
+   public function __construct()
+   {
+      
+   }
+
+
+
+   public function about(){
+     
 
     
    }
+
+
+
+
+   
+
+
+
+
 }

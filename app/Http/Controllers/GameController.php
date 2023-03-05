@@ -15,6 +15,7 @@ class GameController extends Controller
     public function index()
     {
 $api_response = $this->getApiCustimized();
+ 
 
 
 
@@ -53,13 +54,22 @@ return view ('index')->with('api_response',$api_response);
         'name' => $req->name,
          'genre' => $req->genre,
          'category' => $req->category,
+          'added_by' => Auth::user()->id
+          
+          
 
          
 
 
 
 
-        ])
+        ]);
+
+
+
+
+
+        
 
 
 
@@ -68,6 +78,33 @@ return view ('index')->with('api_response',$api_response);
     }
 
 
+public function search(Request $req){
 
+
+
+
+
+}
+
+public function edit(Request $req , Game $game)
+{
+// instead of passing $id as parameter and use Game::find for simpliciy
+// i use model binding teachnique which is Dependency Inject the Model directly and bind the
+// the passed id to the corresponding Model
+
+
+$game = Game::update([
+'name' => $req->name,
+'category' => $req->category,
+'genre' => $req->genre
+
+
+
+
+])
+
+
+
+}
     
 }

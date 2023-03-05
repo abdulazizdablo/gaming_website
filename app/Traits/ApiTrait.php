@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Http;
 trait ApiTrait
 {
 
-    public function getApiCustimized(?string $filter_data_determination)
+    public function getApiCustimized(?string $filter_data_determination, ?string $query_param)
     {
         $rapid_api_key = env('API_RAPID_KEY');
 
@@ -17,10 +17,18 @@ trait ApiTrait
             'endpoint' => 'https://api.rawg.io/api/games?',
             'key' => $rapid_api_key
 
-        ])->timeout(60)->get('{+endpoint}key={key}');
+        ])->timeout(60)->get('{+endpoint}key={key}')['results'];
 
 
+        if ($query_param) {
 
+            $api_response = Http::withUrlParameters([
+                'endpoint' => 'https://api.rawg.io/api/games?',
+                'key' => $rapid_api_key,
+                'query_search' => $query_param
+
+            ])->timeout(60)->get('{+endpoint}key={key}{query_search}');
+        }
 
 
         /*$desired_games = array_intersect_key(
@@ -40,11 +48,10 @@ $array = array_flip(['name', 'released','genres']);
 }, $api_response['results']);*/
 
 
-        $api_response_resutls = $api_response['results'];
         $required_fields = array_flip(['name', 'background_image', 'rating', 'released', 'genres',]);
         /* dd($api_response_resutls);*/
         $api_elements = [];
-        foreach ($api_response_resutls as $outerkey => $array) {
+        foreach ($api_response as $outerkey => $array) {
 
             $api_elements[$outerkey] = array_intersect($array, $required_fields);
 
@@ -119,7 +126,7 @@ $array = array_flip(['name', 'released','genres']);
 
 
         $filter_data_determination  ??
-            $collection_api_result->eachSpread(function ($array) use ($filter_data_determination) {
+            $collection_api_result->each(function ($array) use ($filter_data_determination) {
 
                 $array->sortBy($filter_data_determination);
             });
