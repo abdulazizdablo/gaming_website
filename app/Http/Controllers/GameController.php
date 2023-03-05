@@ -15,6 +15,11 @@ class GameController extends Controller
     public function index()
     {
 $api_response = $this->getApiCustimized();
+
+
+
+
+
         /*$rapid_api_key = env('API_RAPID_KEY');
 
 
@@ -33,6 +38,31 @@ $api_response = Http::withUrlParameters([
 
 dd($api_response);
 return view ('index')->with('api_response',$api_response);
+
+
+    }
+
+
+
+    public function store(Request $req){
+      
+   
+
+
+        $game = Game::create([
+        'name' => $req->name,
+         'genre' => $req->genre,
+         'category' => $req->category,
+
+         
+
+
+
+
+        ])
+
+
+
 
 
     }

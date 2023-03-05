@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Http;
 trait ApiTrait
 {
 
-    public function getApiCustimized()
+    public function getApiCustimized(?string $filter_data_determination)
     {
         $rapid_api_key = env('API_RAPID_KEY');
 
@@ -105,7 +105,31 @@ $array = array_flip(['name', 'released','genres']);
 
 
         /*$gamescollection = collect($api_response);*/
-        return   $api_elements;
+
+
+
+
+        // adding filter feature to api respone elements which is multidimensional array
+        // this functionality will make a collection and iterate over nested items to order
+        // items corresponding to the $filter_determination factor if exist
+
+
+        $collection_api_result = collect($api_elements);
+
+
+
+        $filter_data_determination  ??
+            $collection_api_result->eachSpread(function ($array) use ($filter_data_determination) {
+
+                $array->sortBy($filter_data_determination);
+            });
+
+        if ($collection_api_result) return $collection_api_result;
+
+
+        return $api_elements;
+
+
         var_dump($api_elements);
     }
 }
