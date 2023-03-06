@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Game;
+use Illuminate\Support\Facades\Auth;
 use App\Traits\ApiTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -80,8 +81,11 @@ return view ('index')->with('api_response',$api_response);
 
 public function search(Request $req){
 
+$query_search = $req->search;
 
+$search_result = $this->getApiCustimized($query_search);
 
+return $search_result;
 
 
 }
@@ -93,7 +97,7 @@ public function edit(Request $req , Game $game)
 // the passed id to the corresponding Model
 
 
-$game = Game::update([
+$game = $game->update([
 'name' => $req->name,
 'category' => $req->category,
 'genre' => $req->genre
@@ -101,7 +105,7 @@ $game = Game::update([
 
 
 
-])
+]);
 
 
 

@@ -22,13 +22,17 @@ trait ApiTrait
 
         if ($query_param) {
 
-            $api_response = Http::withUrlParameters([
+            $api_response_search = Http::withUrlParameters([
                 'endpoint' => 'https://api.rawg.io/api/games?',
                 'key' => $rapid_api_key,
                 'query_search' => $query_param
 
-            ])->timeout(60)->get('{+endpoint}key={key}{query_search}');
-        }
+            
+                ])->timeout(60)->get('{+endpoint}key={key}{query_search}');
+        
+        return $api_response_search ;
+            }
+
 
 
         /*$desired_games = array_intersect_key(
