@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Game;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\ApiTrait;
@@ -11,12 +12,12 @@ use Illuminate\Support\Facades\Http;
 class GameController extends Controller
 {
     use  ApiTrait;
-  
+
 
     public function index()
     {
-$api_response = $this->getApiCustimized();
- 
+        $api_response = $this->getApiCustimized();
+
 
 
 
@@ -32,83 +33,67 @@ $api_response = Http::withUrlParameters([
 ])->get('{+endpoint}key={key}');
 
 /*var_dump($api_response->getBody()->getContents());*/
-/*$api_response = json_decode($api_response,true);
+        /*$api_response = json_decode($api_response,true);
 
 
 // to get the full response usinig api_respnse->json() included headrs and status code
 /*$api_response->json();*/
 
-dd($api_response);
-return view ('index')->with('api_response',$api_response);
-
-
+        dd($api_response);
+        return view('index')->with('api_response', $api_response);
     }
 
 
 
-    public function store(Request $req){
-      
-   
+    public function store(Request $req)
+    {
+
+
 
 
         $game = Game::create([
-        'name' => $req->name,
-         'genre' => $req->genre,
-         'category' => $req->category,
-          'added_by' => Auth::user()->id
-          
-          
+            'name' => $req->name,
+            'genre' => $req->genre,
+            'category' => $req->category,
+            'added_by' => Auth::user()->id,
 
-         
+
+
+
+
 
 
 
 
         ]);
-
-
-
-
-
-        
-
-
-
-
-
     }
 
 
-public function search(Request $req){
+    public function search(Request $req)
+    {
 
-$query_search = $req->search;
+        $query_search = $req->search;
 
-$search_result = $this->getApiCustimized($query_search);
+        $search_result = $this->getApiCustimized($query_search);
 
-return $search_result;
+        return $search_result;
+    }
 
-
-}
-
-public function edit(Request $req , Game $game)
-{
-// instead of passing $id as parameter and use Game::find for simpliciy
-// i use model binding teachnique which is Dependency Inject the Model directly and bind the
-// the passed id to the corresponding Model
+    public function edit(Request $req, Game $game)
+    {
+        // instead of passing $id as parameter and use Game::find for simpliciy
+        // i use model binding teachnique which is Dependency Inject the Model directly and bind the
+        // the passed id to the corresponding Model
 
 
-$game = $game->update([
-'name' => $req->name,
-'category' => $req->category,
-'genre' => $req->genre
-
+        $game = $game->update([
+            'name' => $req->name,
+            'category' => $req->category,
+            'genre' => $req->genre
 
 
 
-]);
 
-
-
-}
-    
+        ]);
+    }
 }

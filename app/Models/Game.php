@@ -12,6 +12,8 @@ class Game extends Model
     use HasFactory;
 
 
+    protected $fillable = ['name', 'genre', 'added_by', 'image'];
+
 
 
     /**
@@ -28,7 +30,7 @@ class Game extends Model
 
         return $this->belongsTo(User::class);
     }
-    public function review(): MorphToMany
+    public function review()
     {
 
         return $this->morphMany(Review::class, 'reviewable');

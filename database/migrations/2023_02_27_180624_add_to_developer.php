@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('developer', function (Blueprint $table) {
-            //
+        Schema::create('developer', function (Blueprint $table) {
+            
         });
     }
 
