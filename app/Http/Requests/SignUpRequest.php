@@ -32,7 +32,9 @@ class SignUpRequest extends FormRequest
                 'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'
             ),
             'city' => 'required',
-            'image' => 'required',
+            // paying attention to the mimes set because it can be injects a file which has extinsion of jpg for example
+            // and not be image (the structure is not mime)
+            'image' => 'required|image|mimes:png,jpg,jpeg|max:2048',
             'github_acc' => 'required|url',
             'roles' => 'required',
 

@@ -45,16 +45,17 @@ $api_response = Http::withUrlParameters([
 
 
 
-    public function store(Request $req)
+    public function store(Request $request)
     {
 
 
 
 
         $game = Game::create([
-            'name' => $req->name,
-            'genre' => $req->genre,
-            'category' => $req->category,
+            'name' => $request->name,
+            'genre' => $request->genre,
+            'price' => $request->price,
+            'category' => $request->category,
             'added_by' => Auth::user()->id,
 
 
@@ -69,17 +70,17 @@ $api_response = Http::withUrlParameters([
     }
 
 
-    public function search(Request $req)
+    public function search(Request $request)
     {
 
-        $query_search = $req->search;
+        $query_search = $request->search;
 
         $search_result = $this->getApiCustimized($query_search);
 
         return $search_result;
     }
 
-    public function edit(Request $req, Game $game)
+    public function edit(Request $request, Game $game)
     {
         // instead of passing $id as parameter and use Game::find for simpliciy
         // i use model binding teachnique which is Dependency Inject the Model directly and bind the
@@ -87,9 +88,9 @@ $api_response = Http::withUrlParameters([
 
 
         $game = $game->update([
-            'name' => $req->name,
-            'category' => $req->category,
-            'genre' => $req->genre
+            'name' => $request->name,
+            'category' => $request->category,
+            'genre' => $request->genre
 
 
 

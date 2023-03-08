@@ -27,11 +27,11 @@ trait ApiTrait
                 'key' => $rapid_api_key,
                 'query_search' => $query_param
 
-            
-                ])->timeout(60)->get('{+endpoint}key={key}{query_search}');
-        
-        return $api_response_search ;
-            }
+
+            ])->timeout(60)->get('{+endpoint}key={key}{query_search}');
+
+            return $api_response_search;
+        }
 
 
 

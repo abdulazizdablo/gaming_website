@@ -1,12 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignUpRequest;
 use Illuminate\Http\Request;
-use Hash;
-use Session;
+use Illuminate\Support\Facades\Session;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -63,7 +62,19 @@ class AuthinticationController extends Controller
 
         // specifying $request inputs not using $request->all() for security meassures thus it would be vunlerable to request attacks
 
+        
         $data = $request->input(['first_name', 'last_name', 'email', 'password', 'roles']);
+           
+        // for security measurres and protection from files hijacking the images name must not be as they
+        // uploaded for example "(car.png) must not be stay as it the sent name"
+        // hence keeping the anonymity for the data is key to protection
+        // here the name is being generated it is string combined of the  Unix time
+        // and image extension
+
+
+        $image_name = time().'.'.$request->image->extension();
+        $request->image->storeAs('images', $image_name);
+
         $check = $this->create($data);
 
         return redirect("dashboard")->withSuccess('You have signed-in');
@@ -75,7 +86,6 @@ class AuthinticationController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            /*'roles' =>   auth()->user()->assignRole($data['roles'])*/
 
         ]);
 

@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
 use App\Models\Whishlist;
 use App\Models\Game;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class WishListController extends Controller
@@ -14,7 +15,7 @@ class WishListController extends Controller
 
         return view('whislist');
     }
-    public function addWhishlist(Request $req)
+    public function addWhishlist(Request $request)
     {
 
         /*::whereHas('game', function ($query) {
@@ -23,30 +24,50 @@ class WishListController extends Controller
 
 
         // check if game was previously added to whishlist by fetching Games Models
-        $game_name = $req->game_name;
+        $game_name = $request->game_name;
 
-        $checked_game = Game::whereHas('whishlist_added', function ($query) use ($game_name) {
+        $checked_game = Game::with('wishlist_added')->whereHas('whishlist_added', function ($query) use ($game_name) {
             $query->where('game_name', $game_name);
         })->get();
 
+
+
+        $checked_game = User::with(['games' => function ($query) {
+
+            $query->where('whislist_added', true);
+        }]);
+
+
+        // this functionality is to check the authinticated user if it has 
+        // already a game in his whislist
+          $whishlist = Auth::user()->whishlist;
+        $checked_game = in_array($request->game_name, $whishlist->toArray());
+        $checked_game ?? $whishlist->update([]);
+
+
+
+
+        /*$checked_game = Game::has('whislist_added')
+     ->where('whishlist_added',true);*/
+
+
         // here if the game with whishlist_added revert the whishlist_added to false thus revert to the default state 
         // or create  a new Whishlist mode;
-        $checked_game ?? $checked_game->whihslist_added->update(['whishlist_added' => !$checked_game->whihslist_added]);
 
 
         // check if the authintecated user hasn't already a whishlist
-        if (!auth()->user()->whishlist->exists()) {
+        /*if (!auth()->user()->whishlist->exists()) {
 
 
 
             $whishlist = Whishlist::create([
-                'game_whishlisted' => $req->game_whishlisted,
+                'game_whishlisted' => $request->game_whishlisted,
 
 
 
 
 
             ]);
-        }
+        }*/
     }
 }
