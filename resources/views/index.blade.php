@@ -15,7 +15,7 @@
              {{ $item['name'] }}
      @endforeach
 
-
+<input type="text" name="search">
 
 
 

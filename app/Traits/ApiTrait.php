@@ -8,48 +8,31 @@ use Illuminate\Support\Facades\Http;
 trait ApiTrait
 {
 
-    public function getApiCustimized(?string $filter_data_determination, ?string $query_param)
+    public function getApiCustimized(string $filter_data_determination = null, string $query_param = null)
     {
+
+
+
+
         $rapid_api_key = env('API_RAPID_KEY');
+
+
+
 
 
         $api_response = Http::withUrlParameters([
             'endpoint' => 'https://api.rawg.io/api/games?',
-            'key' => $rapid_api_key
-
-        ])->timeout(60)->get('{+endpoint}key={key}')['results'];
-
-
-        if ($query_param) {
-
-            $api_response_search = Http::withUrlParameters([
-                'endpoint' => 'https://api.rawg.io/api/games?',
-                'key' => $rapid_api_key,
-                'query_search' => $query_param
+            'key' => $rapid_api_key,
+            'query_search' => $query_param
 
 
-            ])->timeout(60)->get('{+endpoint}key={key}{query_search}');
-
-            return $api_response_search;
-        }
+        ])->timeout(60)->get('{+endpoint}key={key}{query_search?}')['results'];
 
 
 
-        /*$desired_games = array_intersect_key(
-    $api_response['results'],  // the array with all keys
-    array_intersect_key(['name', 'released', 'last_name','genres']) // keys to be extracted
-);*/
 
 
 
-        /*$callback = fn( $k,  $v): string => "$k was the $v";*/
-        /*$desired_games = [];
-
-$desired_games = array_map(function ($array) {
-$array = array_flip(['name', 'released','genres']);
-
-	return array_intersect_key(['name', 'released','genres','rating']);
-}, $api_response['results']);*/
 
 
         $required_fields = array_flip(['name', 'background_image', 'rating', 'released', 'genres',]);
@@ -57,11 +40,10 @@ $array = array_flip(['name', 'released','genres']);
         $api_elements = [];
         foreach ($api_response as $outerkey => $array) {
 
-            $api_elements[$outerkey] = array_intersect($array, $required_fields);
 
 
 
-            /* foreach ($array as $innerkey => $item) {
+            foreach ($array as $innerkey => $item) {
 
 
                 if (array_key_exists($innerkey, $required_fields)) {
@@ -69,17 +51,18 @@ $array = array_flip(['name', 'released','genres']);
 
 
 
+
                     $api_elements[$outerkey][$innerkey] = $array[$innerkey];
                 }
-                if (isset($api_response_resutls['genres'])) {
+                if (isset($api_elements[$outerkey]['genres'])) {
 
                     break;
                 }
-            }*/
+            }
         }
+
+        //}
         /*
-
-
         $api_required_elements = array_map(
             function ($api_response_resutls) use ($required_fields) {
                 $api_elements = [];
@@ -129,18 +112,13 @@ $array = array_flip(['name', 'released','genres']);
 
 
 
-        $filter_data_determination  ??
-            $collection_api_result->each(function ($array) use ($filter_data_determination) {
 
-                $array->sortBy($filter_data_determination);
-            });
+        $collection_api_result->each(function ($array) use ($filter_data_determination) {
 
-        if ($collection_api_result) return $collection_api_result;
+            collect($array)->sortBy('genres');
+            var_dump($array);
+        });
 
-
-        return $api_elements;
-
-
-        var_dump($api_elements);
+    
     }
 }

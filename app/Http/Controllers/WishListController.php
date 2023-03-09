@@ -26,16 +26,16 @@ class WishListController extends Controller
         // check if game was previously added to whishlist by fetching Games Models
         $game_name = $request->game_name;
 
-        $checked_game = Game::with('wishlist_added')->whereHas('whishlist_added', function ($query) use ($game_name) {
+       /* $checked_game = Game::with('wishlist_added')->whereHas('whishlist_added', function ($query) use ($game_name) {
             $query->where('game_name', $game_name);
-        })->get();
+        })->get();*/
 
 
 
-        $checked_game = User::with(['games' => function ($query) {
+        /*$checked_game = User::with(['games' => function ($query) {
 
             $query->where('whislist_added', true);
-        }]);
+        }]);*/
 
 
         // this functionality is to check the authinticated user if it has 
