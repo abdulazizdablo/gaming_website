@@ -20,13 +20,13 @@ trait ApiTrait
 
 
 
-        $api_response = Http::withUrlParameters([
+        collect($api_response = Http::withUrlParameters([
             'endpoint' => 'https://api.rawg.io/api/games?',
             'key' => $rapid_api_key,
             'query_search' => $query_param
 
 
-        ])->timeout(60)->get('{+endpoint}key={key}{query_search?}')['results'];
+        ])->timeout(60)->get('{+endpoint}key={key}{query_search?}')['results']);
 
 
 
@@ -39,7 +39,6 @@ trait ApiTrait
         /* dd($api_response_resutls);*/
         $api_elements = [];
         foreach ($api_response as $outerkey => $array) {
-
 
 
 
@@ -112,13 +111,21 @@ trait ApiTrait
 
 
 
+        $collect = $collection_api_result->groupBy(function (array $item, int $key) {
+            return $item['genres'][0]['name'];
+        });      /*  $collection_api_result->map(function ($array) use ($filter_data_determination) {
+               
+$array = collect($array);
 
-        $collection_api_result->each(function ($array) use ($filter_data_determination) {
-
-            collect($array)->sortBy('genres');
-            var_dump($array);
-        });
-
+  $array->groupBy((fn ($array) => $array['genres'][0] ));
     
+      */
+
+        /*$array->sortBy('genres');*/
+
+        /*$result = $collection_api_result->groupBy (fn ($item) => $item['genres'][0]['name']*/
+        /*  }*/
+        /* )*/
+        dd($collect);
     }
 }
