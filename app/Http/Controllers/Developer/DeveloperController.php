@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Developer;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Game;
 
 class DeveloperController extends Controller
 {
@@ -24,7 +25,6 @@ class DeveloperController extends Controller
      */
     public function create()
     {
-        $this->authorize('create-game');
     }
 
     /**
@@ -35,7 +35,17 @@ class DeveloperController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->authorize('create-game');
+    $game_developed = Game::create([
+    'name' => $request->name,
+    'description' => $request->descreption,
+    'genre' => $request->genre
+
+
+
+
+    ]);
+        
     }
 
     /**
@@ -46,7 +56,7 @@ class DeveloperController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**
@@ -67,9 +77,17 @@ class DeveloperController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request, Game $game)
+    {   $this->authorize('edit-game',$game);
+        auth()->user()->games_developed;
+
+          
+        $game->update([
+
+
+
+
+        ]);
     }
 
     /**

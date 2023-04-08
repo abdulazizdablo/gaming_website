@@ -33,7 +33,7 @@ creating eqaution for determining the user best choice*/
         /*$percantage_factor = array_flip()*/
         // array to determine the percentage that the showing games will be priortized
 
-        $recommandation_percantage = [
+        $recommandation_percantage_elemtents = [
             "50%" => $recommendation_factor[0],
 
             "30%" => $recommendation_factor[1],

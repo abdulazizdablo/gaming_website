@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Game;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\ApiTrait;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -13,11 +14,23 @@ class GameController extends Controller
 {
     use  ApiTrait;
 
+    function __construct()
+    {
+        /*$this->middleware('permission:create-games|edit-games|delete-games', ['only' => ['index','show']]);
+         $this->middleware('permission:create-games', ['only' => ['create','store']]);
+         $this->middleware('permission:edit-games', ['only' => ['edit','update']]);
+        
 
+         $this->middleware('permission:delete-games', ['only' => ['destroy']]);*/
+    }
     public function index()
     {
         $api_response = $this->getApiCustimized();
 
+        // using database driver instead of Eloquent for better performance
+
+
+        $games_count = DB::table('games')->count();
 
 
 
@@ -39,14 +52,16 @@ $api_response = Http::withUrlParameters([
 // to get the full response usinig api_respnse->json() included headrs and status code
 /*$api_response->json();*/
 
-        dd($api_response);
-        return view('index')->with('api_response', $api_response);
+
+        return view('index')->with('api_response', $api_response)->with('games_count',$games_count);
     }
 
 
 
     public function store(Request $request)
     {
+        $developer = auth()->user()->roles;
+
 
 
 
@@ -57,14 +72,6 @@ $api_response = Http::withUrlParameters([
             'price' => $request->price,
             'category' => $request->category,
             'added_by' => Auth::user()->id,
-
-
-
-
-
-
-
-
 
         ]);
     }
@@ -85,7 +92,11 @@ $api_response = Http::withUrlParameters([
         // instead of passing $id as parameter and use Game::find for simpliciy
         // i use model binding teachnique which is Dependency Inject the Model directly and bind the
         // the passed id to the corresponding Model
+        $developer = Auth::user();
+        // check the realtionship between game and developer made it
 
+        $game_name = $request->game_name;
+        !in_array(Auth::user()->games_developed->toArray(), $game_name) ?? redirect()->withMessage("You are not privliged to modify");
 
         $game = $game->update([
             'name' => $request->name,

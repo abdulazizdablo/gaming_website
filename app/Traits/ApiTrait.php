@@ -107,13 +107,16 @@ trait ApiTrait
         // items corresponding to the $filter_determination factor if exist
 
 
-        $collection_api_result = collect($api_elements);
+        /*$collection_api_result = collect($api_elements);
 
 
 
-        $collect = $collection_api_result->groupBy(function (array $item, int $key) {
-            return $item['genres'][0]['name'];
-        });      /*  $collection_api_result->map(function ($array) use ($filter_data_determination) {
+        $collect = $collection_api_result->groupBy(function (array $item, int $key) use($filter_data_determination) {
+          if($filter_data_determination == 'genres'){
+            return $item['genres'][0]['name'];}
+              return $item[$filter_data_determination];
+
+        }); */     /*  $collection_api_result->map(function ($array) use ($filter_data_determination) {
                
 $array = collect($array);
 
@@ -126,6 +129,9 @@ $array = collect($array);
         /*$result = $collection_api_result->groupBy (fn ($item) => $item['genres'][0]['name']*/
         /*  }*/
         /* )*/
-        dd($collect);
+       return($api_elements);
+       
+
     }
+
 }

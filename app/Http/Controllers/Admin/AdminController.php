@@ -18,6 +18,14 @@ public function index(){
 
 public function store(){
 
+$this->authorize('create-game');
+$game_added = Game::create([
+
+
+    
+])
+
+
 
 
 

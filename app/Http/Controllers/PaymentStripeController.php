@@ -20,7 +20,7 @@ public function stripePost(Request $request)
         "amount" => 100 * 100,
         "currency" => "usd",
         "source" => $request->stripeToken,
-        "description" => "Test payment from itsolutionstuff.com." 
+        "description" => "Test payment" 
 ]);
 
 Session::flash('success', 'Payment successful!');

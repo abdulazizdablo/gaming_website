@@ -41,9 +41,7 @@ class DatabaseSeeder extends Seeder
             'create-users',
             'edit-users',
             'delete-users',
-            'create-blog-posts',
-            'edit-blog-posts',
-            'delete-blog-posts',
+        
         ]);
 
         $developerRole->givePermissionTo([

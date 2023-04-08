@@ -14,9 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [GameController::class, 'index']);
+Route::get('/',[GameController::class,'index']);
+Route::get('/index', [GameController::class, 'index']);
 
 
-Route::fallback(function () {
-    return redirect('/index');
-});
+
+
+
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

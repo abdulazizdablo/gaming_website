@@ -42,7 +42,10 @@ class WishListController extends Controller
         // already a game in his whislist
           $whishlist = Auth::user()->whishlist;
         $checked_game = in_array($request->game_name, $whishlist->toArray());
-        $checked_game ?? $whishlist->update([]);
+        $checked_game ??
+ $game_whishlist_key = array_search($request->game_name,$whishlist);
+ unset($whishlist[$game_whishlist_key]);       
+        $whishlist->update([$whishlist]);
 
 
 
