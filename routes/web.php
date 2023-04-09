@@ -13,10 +13,18 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/',[GameController::class,'index']);
-Route::get('/index', [GameController::class, 'index']);
+Route::view('/login','auth.login')->name('login');
+Route::view('/register','auth.register')->name('register');
 
+Route::middleware('guest')->group(function()
+{/*Route::get('/login',[GameController::class,"index"])->name('login');
+  Route::get('/register',[GameController::class,"index"])->name('register');
+*/
+});
+
+
+Route::get('/index', [GameController::class, 'index']);
 
 
 
