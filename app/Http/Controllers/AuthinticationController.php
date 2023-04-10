@@ -104,6 +104,36 @@ class AuthinticationController extends Controller
 
         return redirect("login")->withSuccess('You are not allowed to access');
     }*/
+    public function createStepOneForm(){
+
+        return view('auth.first-form');
+
+
+    }
+
+    public function stepOneForm(Request $request){
+    $role = session(['role' =>$request->role ]);
+
+
+
+    }
+    public function createStepTwoForm(){
+ 
+    if (Session::get('role') == 'developer'){
+
+        return view('auth.second_form_developer');
+    }
+    else {
+
+        return  view('auth.second_form_user');
+    }
+
+    }
+    public function stepTwoForm(Request $request){
+ 
+
+
+    }
 
     public function signOut()
     {
