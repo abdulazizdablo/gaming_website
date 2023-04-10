@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignUpRequest;
@@ -62,9 +63,9 @@ class AuthinticationController extends Controller
 
         // specifying $request inputs not using $request->all() for security meassures thus it would be vunlerable to request attacks
 
-        
+
         $data = $request->input(['first_name', 'last_name', 'email', 'password', 'roles']);
-           
+
         // for security measurres and protection from files hijacking the images name must not be as they
         // uploaded for example "(car.png) must not be stay as it the sent name"
         // hence keeping the anonymity for the data is key to protection
@@ -72,7 +73,7 @@ class AuthinticationController extends Controller
         // and image extension
 
 
-        $image_name = time().'.'.$request->image->extension();
+        $image_name = time() . '.' . $request->image->extension();
         $request->image->storeAs('images', $image_name);
 
         $check = $this->create($data);
@@ -85,6 +86,7 @@ class AuthinticationController extends Controller
         $user =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'image_name' => $data['image'],
             'password' => Hash::make($data['password']),
 
         ]);
@@ -92,7 +94,7 @@ class AuthinticationController extends Controller
         // using Spatie assignRole to attach the selected role to the registerd user
 
         $user = $user->assignRole($data['roles']);
-        
+
         return $user;
     }
 
@@ -104,35 +106,55 @@ class AuthinticationController extends Controller
 
         return redirect("login")->withSuccess('You are not allowed to access');
     }*/
-    public function createStepOneForm(){
+    public function createStepOneForm()
+    {
 
         return view('auth.first-form');
-
-
     }
 
-    public function stepOneForm(Request $request){
-    $role = session(['role' =>$request->role ]);
-
-
-
+    public function stepOneForm(Request $request)
+    {
+        $role = session(['role' => $request->role]);
     }
-    public function createStepTwoForm(){
- 
-    if (Session::get('role') == 'developer'){
+    public function createStepTwoForm()
+    {
 
-        return view('auth.second_form_developer');
+        if (Session::get('role') == 'developer') {
+
+            return view('auth.second_form_developer');
+        } else {
+
+            return  view('auth.second_form_user');
+        }
     }
-    else {
+    public function stepTwoForm(Request $request)
+    {
 
-        return  view('auth.second_form_user');
-    }
+        /*  $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6',
+            'roles'  => 'required'
+        ]);*/
 
-    }
-    public function stepTwoForm(Request $request){
- 
+        // specifying $request inputs not using $request->all() for security meassures thus it would be vunlerable to request attacks
 
 
+        $data = $request->input(['first_name', 'last_name', 'email', 'password', 'roles']);
+
+        // for security measurres and protection from files hijacking the images name must not be as they
+        // uploaded for example "(car.png) must not be stay as it the sent name"
+        // hence keeping the anonymity for the data is key to protection
+        // here the name is being generated it is string combined of the  Unix time
+        // and image extension
+
+
+        $image_name = time() . '.' . $request->image->extension();
+        $request->image->storeAs('images', $image_name);
+
+        $check = $this->create($data);
+
+        return redirect("dashboard")->withSuccess('You have signed-in');
     }
 
     public function signOut()
