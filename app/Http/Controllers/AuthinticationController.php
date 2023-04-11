@@ -54,12 +54,7 @@ class AuthinticationController extends Controller
 
     public function Register(SignUpRequest $request)
     {
-        /*  $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
-            'roles'  => 'required'
-        ]);*/
+    
 
         // specifying $request inputs not using $request->all() for security meassures thus it would be vunlerable to request attacks
 
@@ -93,7 +88,7 @@ class AuthinticationController extends Controller
 
         // using Spatie assignRole to attach the selected role to the registerd user
 
-        $user = $user->assignRole($data['roles']);
+        $user = $user->assignRole(Session::get('role'));
 
         return $user;
     }

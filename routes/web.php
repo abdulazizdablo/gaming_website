@@ -17,7 +17,7 @@ Route::view('/','auth.first-step-form');
 
 /*Route::get('/',[GameController::class,'index']);*/
 Route::view('/login','auth.login')->name('login');
-Route::view('/register','register.create')->name('register');
+Route::view('/register','auth.register')->name('register');
 Route::view('/dashboard','dahboard.index')->name('dashboard');
 Route::view('/verify_password','passwords.verify')->name('verify');
 Route::middleware('guest')->group(function()

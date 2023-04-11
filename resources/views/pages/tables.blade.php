@@ -113,7 +113,7 @@
                                                         <div class="d-flex flex-column justify-content-center">
                                                             <h6 class="mb-0 text-sm">Laurent Perrier</h6>
                                                             <p class="text-xs text-secondary mb-0">
-                                                                laurent@creative-tim.com</p>
+                                                                </p>
                                                         </div>
                                                     </div>
                                                 </td>

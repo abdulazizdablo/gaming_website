@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Auth;
 use App\Models\Whishlist;
 use App\Models\Game;
@@ -26,7 +27,7 @@ class WishListController extends Controller
         // check if game was previously added to whishlist by fetching Games Models
         $game_name = $request->game_name;
 
-       /* $checked_game = Game::with('wishlist_added')->whereHas('whishlist_added', function ($query) use ($game_name) {
+        /* $checked_game = Game::with('wishlist_added')->whereHas('whishlist_added', function ($query) use ($game_name) {
             $query->where('game_name', $game_name);
         })->get();*/
 
@@ -40,11 +41,11 @@ class WishListController extends Controller
 
         // this functionality is to check the authinticated user if it has 
         // already a game in his whislist
-          $whishlist = Auth::user()->whishlist;
+        $whishlist = Auth::user()->whishlist;
         $checked_game = in_array($request->game_name, $whishlist->toArray());
         $checked_game ??
- $game_whishlist_key = array_search($request->game_name,$whishlist);
- unset($whishlist[$game_whishlist_key]);       
+            $game_whishlist_key = array_search($request->game_name, $whishlist);
+        unset($whishlist[$game_whishlist_key]);
         $whishlist->update([$whishlist]);
 
 

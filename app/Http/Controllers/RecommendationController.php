@@ -40,5 +40,6 @@ creating eqaution for determining the user best choice*/
             "20%" => $recommendation_factor[2],
         ];
     }
+    // i will use similarity index in future for now it is prototype
 }
 return collect($recommandation_percantage);
