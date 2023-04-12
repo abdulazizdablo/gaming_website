@@ -69,6 +69,30 @@
                                 </button>
                             </div>
                         </div>
+                        @if(Session::get('role') == "developer")
+                        <div class="col-md-6">
+                            <input id="github" type="email" class="form-control @error('github') is-invalid @enderror" name="email" value="{{ old('github') }}" required autocomplete="email">
+
+                            @error('github')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="col-md-6">
+                            <input id="resume" type="file" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('resume') }}" required autocomplete="resume">
+
+                            @error('resume')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+                        @endif
+                      
+                    </div>
+
                     </form>
                 </div>
             </div>

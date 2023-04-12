@@ -14,7 +14,8 @@
 
     <body>
 
-        <form method="POST">
+        <form method="POST" action=""{{ route('register') }}">
+            @csrf
             <div class="row">
                 <div class="col-sm-6">
                     <div class="card">
@@ -49,8 +50,8 @@
                     </div>
                 </div>
             </div>
-            <a href="{{ route('register') }}"> <input class="btn btn-primary" type="submit" name="form-submit"
-                    value="Sign Up"></a>
+             <input class="btn btn-primary" type="submit" name="form-submit"
+                    >
         </form>
     </body>
 

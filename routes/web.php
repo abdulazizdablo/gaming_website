@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthinticationController;
 use App\Http\Controllers\GameController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,8 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::view('/','auth.first-step-form');
 
 /*Route::get('/',[GameController::class,'index']);*/
+Route::post('/register',[AuthinticationController::class,'stepOneForm']).
+Route::get('/register',[AuthinticationController::class,'CreatestepOneForm'])->name('register');
+
 Route::view('/login','auth.login')->name('login');
-Route::view('/register','auth.register')->name('register');
+/*Route::view('/register','auth.register')->name('register');*/
 Route::view('/dashboard','dahboard.index')->name('dashboard');
 Route::view('/verify_password','passwords.verify')->name('verify');
 Route::middleware('guest')->group(function()
