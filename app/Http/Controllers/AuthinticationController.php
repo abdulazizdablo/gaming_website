@@ -21,8 +21,8 @@ class AuthinticationController extends Controller
     {
 
 
-        $this->middleware('guest', ['only' => ['register']]);
-        $this->middleware('auth', ['only' => ['login']]);
+       /* $this->middleware('guest', ['only' => ['register']]);
+        $this->middleware('auth', ['only' => ['login']]);*/
     }
 
 
@@ -110,6 +110,8 @@ class AuthinticationController extends Controller
     public function stepOneForm(Request $request)
     {
         $role = session(['role' => $request->role]);
+       var_dump($role);
+
     }
     public function createStepTwoForm()
     {

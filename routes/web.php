@@ -16,10 +16,11 @@ use Illuminate\Support\Facades\Route;
 */
 Route::view('/','auth.first-step-form');
 
-/*Route::get('/',[GameController::class,'index']);*/
-Route::post('/register',[AuthinticationController::class,'stepOneForm']).
-Route::get('/register',[AuthinticationController::class,'CreatestepOneForm'])->name('register');
 
+/*Route::get('/',[GameController::class,'index']);*/
+Route::get('/register',[AuthinticationController::class,'createstepOneForm'])->name('register.show');
+
+Route::post('/register',[AuthinticationController::class,'stepOneForm'])->name('register.store');
 Route::view('/login','auth.login')->name('login');
 /*Route::view('/register','auth.register')->name('register');*/
 Route::view('/dashboard','dahboard.index')->name('dashboard');
