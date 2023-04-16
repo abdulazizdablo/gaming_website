@@ -104,13 +104,13 @@ class AuthinticationController extends Controller
     public function createStepOneForm()
     {
 
-        return view('auth.first-form');
+        return view('regestration.create');
     }
 
     public function stepOneForm(Request $request)
     {
         $role = session(['role' => $request->role]);
-       var_dump($role);
+        return redirect('/register');
 
     }
     public function createStepTwoForm()
