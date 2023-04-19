@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Game;
-use Illuminate\Support\Facades\Auth;
 use App\Traits\ApiTrait;
 use Illuminate\Support\Facades\DB;
+use App\Models\Game;
+use Illuminate\Support\Facades\Auth;
+use CyrildeWit\EloquentViewable\InteractsWithViews;
+use CyrildeWit\EloquentViewable\Contracts\Viewable;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 
-
-class GameController extends Controller
+class GameController1 extends Controller
 {
-    use  ApiTrait;
-
+use ApiTrait;
     function __construct()
     {
         /*$this->middleware('permission:create-games|edit-games|delete-games', ['only' => ['index','show']]);
@@ -23,6 +22,12 @@ class GameController extends Controller
 
          $this->middleware('permission:delete-games', ['only' => ['destroy']]);*/
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         $api_response = $this->getApiCustimized();
@@ -56,10 +61,25 @@ $api_response = Http::withUrlParameters([
         return view('index')->with('api_response', $api_response)->with('games_count',$games_count);
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view ('games.create');
+    }
 
-
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
+      
         $developer = auth()->user()->roles;
 
 
@@ -76,7 +96,59 @@ $api_response = Http::withUrlParameters([
         ]);
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Game $game)
+    {
+        views($game)
+        ->cooldown($minutes = 3)
+        ->record();
+    }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Game $game)
+    {
+      return view('games.display')->with('game',$game);
+      
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Game $game)
+    {
+   // instead of passing $id as parameter and use Game::find for simpliciy
+        // i use model binding teachnique which is Dependency Inject the Model directly and bind the
+        // the passed id to the corresponding Model
+        $developer = Auth::user();
+        // check the realtionship between game and developer made it
+
+        $game_name = $request->game_name;
+        !in_array(Auth::user()->games_developed->toArray(), $game_name) ?? redirect()->withMessage("You are not privliged to modify");
+
+       $game->update([
+            'name' => $request->name,
+            'category' => $request->category,
+            'genre' => $request->genre
+
+
+
+
+        ]);
+    }
     public function search(Request $request)
     {
 
@@ -86,26 +158,15 @@ $api_response = Http::withUrlParameters([
 
         return $search_result;
     }
-
-    public function edit(Request $request, Game $game)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Game $game)
     {
-        // instead of passing $id as parameter and use Game::find for simpliciy
-        // i use model binding teachnique which is Dependency Inject the Model directly and bind the
-        // the passed id to the corresponding Model
-        $developer = Auth::user();
-        // check the realtionship between game and developer made it
-
-        $game_name = $request->game_name;
-        !in_array(Auth::user()->games_developed->toArray(), $game_name) ?? redirect()->withMessage("You are not privliged to modify");
-
-        $game = $game->update([
-            'name' => $request->name,
-            'category' => $request->category,
-            'genre' => $request->genre
-
-
-
-
-        ]);
+      
+        $game->delete;
     }
 }

@@ -5,7 +5,7 @@
 
 
     <h2>Register</h2>
-    <form method="POST" action="/register">
+    <form method="POST" action= {{ route('sign_up') }}  enctype="multipart/form-data">
         {{ csrf_field() }}
         <div class="form-group">
             <label for="name">Name:</label>
@@ -23,6 +23,19 @@
         </div>
 
         <div class="form-group">
+            <label class="form-label" for="inputImage">Select Image:</label>
+            <input 
+                type="file" 
+                name="image" 
+                id="inputImage"
+                class="form-control @error('image') is-invalid @enderror">
+
+            @error('image')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
+        </div>
+
+        <div class="form-group">
             <label for="password_confirmation">Password Confirmation:</label>
             <input type="password" class="form-control" id="password_confirmation"
                    name="password_confirmation">
@@ -30,12 +43,12 @@
         @if (Session::get('role') == 'developer')
             <div class="form-group">
                 <label for="password_confirmation">GitHub Account:</label>
-                <input type="password" class="form-control" id="password_confirmation"
+                <input type="url" class="form-control" id="password_confirmation"
                        name="password_confirmation">
             </div>
             <div class="form-group">
-                <label for="password_confirmation">Portfolio Website</label>
-                <input type="password" class="form-control" id="password_confirmation"
+                <label for="password_confirmation">Portfolio Website:</label>
+                <input type="url" class="form-control" id="password_confirmation"
                        name="password_confirmation">
             </div>
 

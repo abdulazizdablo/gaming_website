@@ -9,6 +9,7 @@
         "amranidev/laracombee": "^0.2.1",
         "awssat/laravel-visits": "^4.1",
         "cartalyst/stripe-laravel": "^14.0",
+        "cyrildewit/eloquent-viewable": "^7.0",
         "guzzlehttp/guzzle": "^7.5",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",

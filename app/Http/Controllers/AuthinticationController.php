@@ -59,7 +59,11 @@ class AuthinticationController extends Controller
         // specifying $request inputs not using $request->all() for security meassures thus it would be vunlerable to request attacks
 
 
-        $data = $request->input(['first_name', 'last_name', 'email', 'password', 'roles']);
+     Session::get('role') == 'developer' ?        $data = $request->input(['name', 'email', 'password', 'github_acc','image'])
+     :         $data = $request->input(['name', 'email', 'password',]);
+
+
+
 
         // for security measurres and protection from files hijacking the images name must not be as they
         // uploaded for example "(car.png) must not be stay as it the sent name"

@@ -1,6 +1,7 @@
 
 @extends('layouts.app')
 @section('content')
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <h2>Register</h2>
     <form method="POST" action="/register">

@@ -22,7 +22,7 @@ Route::get('/register',[AuthinticationController::class,'createstepOneForm'])->n
 
 Route::post('/register',[AuthinticationController::class,'stepOneForm'])->name('register.store');
 
-
+Route::post('/sign_up',[AuthinticationController::class,'Register'])->name('sign_up');
 
 Route::view('/login','auth.login')->name('login');
 /*Route::view('/register','auth.register')->name('register');*/
