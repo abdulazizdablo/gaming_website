@@ -42,14 +42,14 @@
         </div>
         @if (Session::get('role') == 'developer')
             <div class="form-group">
-                <label for="password_confirmation">GitHub Account:</label>
-                <input type="url" class="form-control" id="password_confirmation"
-                       name="password_confirmation">
+                <label for="github_account">GitHub Account:</label>
+                <input type="url" class="form-control" id="github_account"
+                       name="github_account">
             </div>
             <div class="form-group">
-                <label for="password_confirmation">Portfolio Website:</label>
-                <input type="url" class="form-control" id="password_confirmation"
-                       name="password_confirmation">
+                <label for="portfolio">Portfolio Website:</label>
+                <input type="url" class="form-control" id="portfolio"
+                       name="portfolio">
             </div>
 
         @endif

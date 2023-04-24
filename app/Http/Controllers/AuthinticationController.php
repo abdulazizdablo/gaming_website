@@ -8,6 +8,8 @@ use App\Http\Requests\SignUpRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
+use App\Models\Developer;
+
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +23,7 @@ class AuthinticationController extends Controller
     {
 
 
-       /* $this->middleware('guest', ['only' => ['register']]);
+        /* $this->middleware('guest', ['only' => ['register']]);
         $this->middleware('auth', ['only' => ['login']]);*/
     }
 
@@ -52,15 +54,17 @@ class AuthinticationController extends Controller
         return view('auth.registration');
     }
 
-    public function Register(SignUpRequest $request)
+    public function Register(Request $request)
     {
-    
+
 
         // specifying $request inputs not using $request->all() for security meassures thus it would be vunlerable to request attacks
 
 
-     Session::get('role') == 'developer' ?        $data = $request->input(['name', 'email', 'password', 'github_acc','image'])
-     :         $data = $request->input(['name', 'email', 'password',]);
+        if (Session::get('role') == 'developer')  
+         {$data = $request->input(['name', 'email', 'password','password_confirmation','image', 'github_account','portfolio', ]);}
+
+            $data = $request->input(['name', 'email', 'password',]);
 
 
 
@@ -76,17 +80,19 @@ class AuthinticationController extends Controller
         $request->image->storeAs('images', $image_name);
 
         $check = $this->create($data);
-
-        return redirect("dashboard")->withSuccess('You have signed-in');
+         var_dump($_POST[]);
     }
 
-    public function create(array $data)
+    public function create( $data)
     {
-        $user =  User::create([
+        $user = ucfirst(Session::get('role'))::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'image_name' => $data['image'],
             'password' => Hash::make($data['password']),
+            'github_account'??'github_account' => $data['github_account'],
+            'portfolio'??'portfolio' => $data['portfolio']
+
 
         ]);
 
@@ -115,7 +121,6 @@ class AuthinticationController extends Controller
     {
         $role = session(['role' => $request->role]);
         return redirect('/register');
-
     }
     public function createStepTwoForm()
     {

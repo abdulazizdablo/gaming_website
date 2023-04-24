@@ -117,7 +117,7 @@ $api_response = Http::withUrlParameters([
      */
     public function edit(Game $game)
     {
-      return view('games.display')->with('game',$game);
+      return view('games.edit')->with('game',$game);
       
     }
 
