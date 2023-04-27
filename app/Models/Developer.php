@@ -15,7 +15,13 @@ class Developer extends Model
 
 
 
-    protected $fillable = ['id', 'name', 'slug',];
+    protected $fillable = ['id', 
+    'name',
+    'password',
+     'slug',
+     'image',
+     'github_account',
+     'portfolio'];
 
     public function game()
     {

@@ -8,7 +8,7 @@ use App\Http\Requests\SignUpRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
-use App\Models\Developer;
+use App\Models\Developer as Developer;
 
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -59,12 +59,13 @@ class AuthinticationController extends Controller
 
 
         // specifying $request inputs not using $request->all() for security meassures thus it would be vunlerable to request attacks
+             $data = $request->all();
 
+        /*if (Session::get('role') == 'developer')  
+         {$data = $request->input(['name', 'email', 'password','password_confirmation','image', 'github_account','portfolio', ]);
+        var_dump($request->input(['name', 'email', 'password','password_confirmation','image', 'github_account','portfolio', ]));}
 
-        if (Session::get('role') == 'developer')  
-         {$data = $request->input(['name', 'email', 'password','password_confirmation','image', 'github_account','portfolio', ]);}
-
-            $data = $request->input(['name', 'email', 'password',]);
+            $data = $request->input(['name', 'email', 'password','image']);*/
 
 
 
@@ -78,14 +79,44 @@ class AuthinticationController extends Controller
 
         $image_name = time() . '.' . $request->image->extension();
         $request->image->storeAs('images', $image_name);
-
+       
         $check = $this->create($data);
-         var_dump($_POST[]);
+        return redirect('index')->withMessage("You have signed up");
+         
     }
 
-    public function create( $data)
+    public function create( $data )
     {
-        $user = ucfirst(Session::get('role'))::create([
+      $user = new User();
+      $user->name = $data['name'];
+      $user->email = $data['email'];
+      $user->image_name = $data['image'];
+      $user->password =  Hash::make($data['password']);
+      $user->save();
+         /*$user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+             'image_name' => $data['image'],
+            'password' => Hash::make($data['password']),
+         ]);*/
+         $user = $user->assignRole(Session::get('role'));
+         if (Session::get('role') == 'developer'){
+
+         $developer = Developer::create([
+
+         'name' =>$data['name'],
+         
+         'github_account' =>$data['github_account'],
+         'portfolio' => $data['portfolio']
+
+         ]);
+           
+         }
+
+
+
+        /*$model_name =  'App\\Models\\'.ucfirst(Session::get('role'));
+        $user =  $model_name::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'image_name' => $data['image'],
@@ -94,11 +125,11 @@ class AuthinticationController extends Controller
             'portfolio'??'portfolio' => $data['portfolio']
 
 
-        ]);
+        ]);*/
 
         // using Spatie assignRole to attach the selected role to the registerd user
 
-        $user = $user->assignRole(Session::get('role'));
+       Auth::login($user);
 
         return $user;
     }

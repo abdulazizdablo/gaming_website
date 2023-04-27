@@ -14,7 +14,7 @@ trait ApiTrait
 
 
 
-        $rapid_api_key = env('API_RAPID_KEY');
+        $rapid_api_key = "b46095eec01e4c7ea644f2834b1cc6b6";
 
 
 
@@ -27,7 +27,6 @@ trait ApiTrait
 
 
         ])->timeout(60)->get('{+endpoint}key={key}{query_search?}')['results']);
-
 
 
 
@@ -129,7 +128,7 @@ $array = collect($array);
         /*$result = $collection_api_result->groupBy (fn ($item) => $item['genres'][0]['name']*/
         /*  }*/
         /* )*/
-       return($api_elements);
+       return $api_elements;
        
 
     }

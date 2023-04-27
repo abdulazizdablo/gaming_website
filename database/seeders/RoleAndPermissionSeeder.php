@@ -18,5 +18,6 @@ class RoleAndPermissionSeeder extends Seeder
         $this->call([
             RoleAndPermissionSeeder::class,
         ]);
+        
     }
 }

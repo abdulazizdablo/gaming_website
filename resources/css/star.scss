@@ -1,0 +1,147 @@
+$star-size: 64px;
+$star-initial-color: #dee0e0;
+$star-active-color: #ffac33;
+$circle-color: #ff9b0b;
+$line-color: #fa733e;
+
+body {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   height: 100vh;
+   position: relative;
+   font-family: 'Nunito', sans-serif;
+}
+
+input[type="checkbox"] {
+   display: none;
+   
+   // activate animations
+   &:checked {
+      ~ .star {
+         animation: star-bounce 1.8s ease-out forwards;
+      }
+      
+      ~ .circle {
+         animation: circle .4s .2s ease-out forwards;
+      }
+      
+      ~ .info {
+         display: none;
+      }
+      
+      ~ .whoa {
+         display: block;
+      }
+   }
+}
+
+.animation-trigger {
+   position: absolute;
+   width: $star-size;
+   height: $star-size;
+   margin: 0;
+   cursor: pointer;
+   z-index: 5;
+   
+   &:active {      
+      + .star {
+         transform: scale(1.1);
+      }
+   }
+}
+
+.star {
+   width: $star-size;
+   height: $star-size;
+   fill: $star-initial-color;
+}
+
+.circle {
+   width: $star-size;
+   height: $star-size;
+   position: absolute;
+   border-radius: 50%;
+   border: $star-size / 2 solid $circle-color;
+   transform: scale(0);
+}
+
+.lines-holder {
+   position: absolute;
+   
+   .line {
+      width: 3px;
+      height: 3px;
+      position: absolute;
+      background-color: $line-color;
+      opacity: 0;
+
+      &:nth-child(1) { margin-top: 5px; }
+      &:nth-child(2) { margin-top: 2px; margin-right: 5px; }
+      &:nth-child(3) { margin-top: 5px; }
+      &:nth-child(4) { margin-top: 5px; }
+      &:nth-child(5) { margin-top: 5px; }
+   }
+}
+
+.click-me {
+   position: absolute;
+   margin-top: 50px;
+   text-transform: uppercase;
+   font-weight: bold;
+   color: $star-initial-color;
+}
+
+.whoa {
+   display: none;
+   color: $line-color;
+}
+
+// ===========================
+// animations
+// ===========================
+@keyframes star-bounce {
+   0% {
+      transform: scale(1);
+   }
+   20% {
+      transform: scale(0);
+      fill: $star-initial-color;
+   }
+   21% {
+      transform: scale(0);
+      fill: $star-active-color;
+   }
+   30% {
+      transform: scale(0);
+   }
+   40% {
+      transform: scale(1.1);
+   }
+   55% {
+      transform: scale(.9);
+   }
+   75% {
+      transform: scale(1.05);
+   }
+   95% {
+      transform: scale(.98);
+   }
+   100% {
+      transform: scale(1);
+      fill: $star-active-color;
+   }
+}
+
+@keyframes circle {
+   0% {
+      transform: scale(0);
+   }
+   50% {
+      border-width: $star-size / 2;
+   }
+   100% {
+      transform: scale(1.5);
+      border-width: 0;
+   }
+}

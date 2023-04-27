@@ -17,13 +17,14 @@ use Illuminate\Support\Facades\Route;
 Route::view('/','auth.first-step-form');
 
 
+
 /*Route::get('/',[GameController::class,'index']);*/
 Route::get('/register',[AuthinticationController::class,'createstepOneForm'])->name('register.show');
 
 Route::post('/register',[AuthinticationController::class,'stepOneForm'])->name('register.store');
 
 Route::post('/sign_up',[AuthinticationController::class,'Register'])->name('sign_up');
-
+Route::get('/logout',[AuthinticationController::class,'signOut'])->name('logout');
 Route::view('/login','auth.login')->name('login');
 /*Route::view('/register','auth.register')->name('register');*/
 Route::view('/dashboard','dahboard.index')->name('dashboard');
@@ -33,9 +34,8 @@ Route::middleware('guest')->group(function()
   Route::get('/register',[GameController::class,"index"])->name('register');
 */
 });
-
-
 Route::get('/index', [GameController::class, 'index']);
+
 
 
 

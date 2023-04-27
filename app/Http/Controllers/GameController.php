@@ -10,7 +10,7 @@ use CyrildeWit\EloquentViewable\InteractsWithViews;
 use CyrildeWit\EloquentViewable\Contracts\Viewable;
 use Illuminate\Http\Request;
 
-class GameController1 extends Controller
+class GameController extends Controller
 {
 use ApiTrait;
     function __construct()
