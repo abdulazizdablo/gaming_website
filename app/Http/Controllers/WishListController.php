@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Whishlist;
 use App\Models\Game;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class WishListController extends Controller
@@ -18,7 +19,7 @@ class WishListController extends Controller
     }
     public function addWhishlist(Request $request)
     {
-
+dd($request);
         /*::whereHas('game', function ($query) {
         return $query->where('game_id', '=', $game_id);
     })->get(*/
@@ -42,13 +43,33 @@ class WishListController extends Controller
         // this functionality is to check the authinticated user if it has 
         // already a game in his whislist
         $whishlist = Auth::user()->whishlist;
-        $checked_game = in_array($request->game_name, $whishlist->toArray());
-        $checked_game ??
-        $game_whishlist_key = array_search($request->game_name, $whishlist);
+        $checked_game = in_array($request->game_name, $whishlist);
+        if($checked_game) 
+           { $game_whishlist_key = array_search($request->game_name, $whishlist);
         unset($whishlist[$game_whishlist_key]);
-        $whishlist->update([$whishlist]);
+        $whishlist->update([$whishlist]);}
+
+// create model realtionship if not exist
 
 
+if(!$whishlist){
+
+Auth::user()->whishlist->$game_name;
+
+}
+
+array_push($whishlist,Auth::user()->whishlist->$game_name);
+
+
+// Optimal Query Search
+
+// Deleting game from database
+/*$checked_game = DB::query('UPDATE users SET whishlist = JSON_REMOVE(whishlist,replace(json_search(whislist,"one",$game_name),""","") WHERE json_search(whishlist, "one", $game_name) IS NOT NULL ');
+if(is_null($checked_game)){
+
+
+
+}*/
 
 
         /*$checked_game = Game::has('whislist_added')

@@ -31,7 +31,16 @@
                     <input type="search" name="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
                     <button type="button" class="btn btn-outline-primary">search</button>
                   </div>
-              
+                  @if (Session::get('role') == 'developer' || Session::get('role') == 'user')
+                 <a href={{route('game.create')}}> <button type="button" class="btn btn-primary"></a>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
+  </svg>
+                    <span class="visually-hidden">Button</span>
+                  </button> 
+                  @endif
+                  <button id="add_whishlist" class="btn btn-primary" name="addtowhishlist_button" type="button" placeholder="add to your Whishlist">add to your Whishlist</button>
+               
                              <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">

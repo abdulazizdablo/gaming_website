@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthinticationController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\WishListController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,16 +20,18 @@ Route::view('/','auth.first-step-form');
 
 
 /*Route::get('/',[GameController::class,'index']);*/
+Route::post('/add-to-whishlist',[WishListController::class,'addWhishlist'])->name('addtoWhishlist');
+
 Route::get('/register',[AuthinticationController::class,'createstepOneForm'])->name('register.show');
 
 Route::post('/register',[AuthinticationController::class,'stepOneForm'])->name('register.store');
-
 Route::post('/sign_up',[AuthinticationController::class,'Register'])->name('sign_up');
 Route::get('/logout',[AuthinticationController::class,'signOut'])->name('logout');
 Route::view('/login','auth.login')->name('login');
 /*Route::view('/register','auth.register')->name('register');*/
 Route::view('/dashboard','dahboard.index')->name('dashboard');
 Route::view('/verify_password','passwords.verify')->name('verify');
+Route::resource('game',GameController::class);
 Route::middleware('guest')->group(function()
 {/*Route::get('/login',[GameController::class,"index"])->name('login');
   Route::get('/register',[GameController::class,"index"])->name('register');

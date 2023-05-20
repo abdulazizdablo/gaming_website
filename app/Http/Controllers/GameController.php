@@ -104,7 +104,7 @@ $api_response = Http::withUrlParameters([
      */
     public function show(Game $game)
     {
-        views($game)
+        $views = views($game)
         ->cooldown($minutes = 3)
         ->record();
     }
