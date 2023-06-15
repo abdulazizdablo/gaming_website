@@ -59,7 +59,7 @@ class AuthinticationController extends Controller
 
 
         // specifying $request inputs not using $request->all() for security meassures thus it would be vunlerable to request attacks
-             $data = $request->all();
+        $data = $request->all();
 
         /*if (Session::get('role') == 'developer')  
          {$data = $request->input(['name', 'email', 'password','password_confirmation','image', 'github_account','portfolio', ]);
@@ -79,57 +79,43 @@ class AuthinticationController extends Controller
 
         $image_name = time() . '.' . $request->image->extension();
         $request->image->storeAs('images', $image_name);
-       
+
         $check = $this->create($data);
         return redirect('index')->withMessage("You have signed up");
-         
     }
 
-    public function create( $data )
+    public function create($data)
     {
-      $user = new User();
-      $user->name = $data['name'];
-      $user->email = $data['email'];
-      $user->image_name = $data['image'];
-      $user->password =  Hash::make($data['password']);
-      $user->save();
-         /*$user = User::create([
+        $user = new User();
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+        $user->image_name = $data['image'];
+        $user->password =  Hash::make($data['password']);
+        $user->save();
+        /*$user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
              'image_name' => $data['image'],
             'password' => Hash::make($data['password']),
          ]);*/
-         $user = $user->assignRole(Session::get('role'));
-         if (Session::get('role') == 'developer'){
+        $user = $user->assignRole(Session::get('role'));
+        if (Session::get('role') == 'developer') {
 
-         $developer = Developer::create([
+            $developer = Developer::create([
 
-         'name' =>$data['name'],
-         
-         'github_account' =>$data['github_account'],
-         'portfolio' => $data['portfolio']
+                'name' => $data['name'],
 
-         ]);
-           
-         }
+                'github_account' => $data['github_account'],
+                'portfolio' => $data['portfolio']
 
+            ]);
+        }
 
 
-        /*$model_name =  'App\\Models\\'.ucfirst(Session::get('role'));
-        $user =  $model_name::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'image_name' => $data['image'],
-            'password' => Hash::make($data['password']),
-            'github_account'??'github_account' => $data['github_account'],
-            'portfolio'??'portfolio' => $data['portfolio']
-
-
-        ]);*/
 
         // using Spatie assignRole to attach the selected role to the registerd user
 
-       Auth::login($user);
+        Auth::login($user);
 
         return $user;
     }
@@ -164,15 +150,10 @@ class AuthinticationController extends Controller
             return  view('auth.second_form_user');
         }
     }
-    public function stepTwoForm(Request $request)
+   /* public function stepTwoForm(Request $request)
     {
 
-        /*  $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
-            'roles'  => 'required'
-        ]);*/
+
 
         // specifying $request inputs not using $request->all() for security meassures thus it would be vunlerable to request attacks
 
@@ -192,7 +173,7 @@ class AuthinticationController extends Controller
         $check = $this->create($data);
 
         return redirect("dashboard")->withSuccess('You have signed-in');
-    }
+    }*/
 
     public function signOut()
     {

@@ -11,14 +11,18 @@ class LatestGamesNotification extends Notification
 {
     use Queueable;
 
+
+
+
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($game)
     {
-        //
+        
     }
 
     /**

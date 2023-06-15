@@ -30,7 +30,7 @@ class GameController extends Controller
      */
     public function index()
     {
-        $api_response = $this->getApiCustimized();
+        $api_response = $this->getApiCustimized()->paginate();
 
         // using database driver instead of Eloquent for better performance
 
@@ -144,6 +144,6 @@ class GameController extends Controller
     public function destroy(Game $game)
     {
 
-        $game->delete;
+        $game->delete();
     }
 }
