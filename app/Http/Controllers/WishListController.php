@@ -19,7 +19,7 @@ class WishListController extends Controller
     }
     public function addWhishlist(Request $request)
     {
-dd($request);
+        dd($request);
         /*::whereHas('game', function ($query) {
         return $query->where('game_id', '=', $game_id);
     })->get(*/
@@ -44,27 +44,27 @@ dd($request);
         // already a game in his whislist
         $whishlist = Auth::user()->whishlist;
         $checked_game = in_array($request->game_name, $whishlist);
-        if($checked_game) 
-           { $game_whishlist_key = array_search($request->game_name, $whishlist);
-        unset($whishlist[$game_whishlist_key]);
-        $whishlist->update([$whishlist]);}
+        if ($checked_game) {
+            $game_whishlist_key = array_search($request->game_name, $whishlist);
+            unset($whishlist[$game_whishlist_key]);
+            $whishlist->update([$whishlist]);
+        }
 
-// create model realtionship if not exist
-
-
-if(!$whishlist){
-
-Auth::user()->whishlist->$game_name;
-
-}
-
-array_push($whishlist,Auth::user()->whishlist->$game_name);
+        // create model realtionship if not exist
 
 
-// Optimal Query Search
+        if (!$whishlist) {
 
-// Deleting game from database
-/*$checked_game = DB::query('UPDATE users SET whishlist = JSON_REMOVE(whishlist,replace(json_search(whislist,"one",$game_name),""","") WHERE json_search(whishlist, "one", $game_name) IS NOT NULL ');
+            Auth::user()->whishlist->$game_name;
+        }
+
+        array_push($whishlist, Auth::user()->whishlist->$game_name);
+
+
+        // Optimal Query Search
+
+        // Deleting game from database
+        /*$checked_game = DB::query('UPDATE users SET whishlist = JSON_REMOVE(whishlist,replace(json_search(whislist,"one",$game_name),""","") WHERE json_search(whishlist, "one", $game_name) IS NOT NULL ');
 if(is_null($checked_game)){
 
 

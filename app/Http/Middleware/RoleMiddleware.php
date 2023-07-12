@@ -3,9 +3,10 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 
-class AdminMiddleware
+class RoleMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,6 +17,10 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+        if(Session::get('role') !== 'developer'){
+
+            return redirect()->route('game.index');
+        }
         return $next($request);
     }
 }

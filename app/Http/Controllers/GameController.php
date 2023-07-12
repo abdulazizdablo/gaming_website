@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use CyrildeWit\EloquentViewable\InteractsWithViews;
 use CyrildeWit\EloquentViewable\Contracts\Viewable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class GameController extends Controller
 {
@@ -30,14 +31,16 @@ class GameController extends Controller
      */
     public function index()
     {
-        $api_response = $this->getApiCustimized()->paginate();
+        $api_response = $this->getApiCustimized();
 
         // using database driver instead of Eloquent for better performance
 
 
         $games_count = DB::table('games')->count();
 
-
+Cache::remember('games', 900, function ( $api_response) {
+    return $api_response;
+});
 
         return view('index')->with('api_response', $api_response)->with('games_count', $games_count);
     }
@@ -86,7 +89,14 @@ class GameController extends Controller
             ->cooldown($minutes = 3)
             ->record();
     }
+public function gameDetails(Request $request){
 
+$query_param = $request->slug;
+
+
+return $this->getApiCustimized($query_param);
+
+}
     /**
      * Show the form for editing the specified resource.
      *

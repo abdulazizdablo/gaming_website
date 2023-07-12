@@ -12,29 +12,35 @@ trait ApiTrait
     {
 
 
+// for pagaination varabiles
+
+//$page = 1;
+//$perPage = 20;
 
 
-        $rapid_api_key = "b46095eec01e4c7ea644f2834b1cc6b6";
+
+
+        $rapid_api_key = 'b46095eec01e4c7ea644f2834b1cc6b6';
 
 
 
 
 
-        collect($api_response = Http::withUrlParameters([
+       $api_response = collect(Http::withUrlParameters([
             'endpoint' => 'https://api.rawg.io/api/games?',
             'key' => $rapid_api_key,
-            'query_search' => $query_param
+            'query_search' => $query_param,
+            
 
-
-        ])->timeout(60)->get('{+endpoint}key={key}{query_search?}')['results']);
-
-
-
+        ])->timeout(60)->get('{+endpoint}key={key}{query_search?}')->json()['results']);
 
 
 
 
-        $required_fields = array_flip(['name', 'background_image', 'rating', 'released', 'genres',]);
+
+
+
+        $required_fields = array_flip(['name','slug', 'background_image', 'rating', 'released', 'genres',]);
         /* dd($api_response_resutls);*/
         $api_elements = [];
         foreach ($api_response as $outerkey => $array) {
@@ -59,44 +65,7 @@ trait ApiTrait
             }
         }
 
-        //}
-        /*
-        $api_required_elements = array_map(
-            function ($api_response_resutls) use ($required_fields) {
-                $api_elements = [];
-                foreach ($api_response_resutls as  $key => $array) {
-                    
-                    foreach ($array as $k => $values)
-
-                    if (array_key_exists($k, $required_fields)) {
-
-
-
-
-                        $api_elements[$required_fields] = $api_response_resutls[$required_fields];
-
-
-                        return   $api_elements;
-                    }
-                }
-            },
-            $api_response_resutls
-        );
-
-
-        /* foreach ($api_response['results'] as $key => $array) {
-        }
-
-
-        /*foreach ($api_response['results'] as $key => $array){
-
-
-
-
-}*/
-
-
-        /*$gamescollection = collect($api_response);*/
+       
 
 
 
@@ -128,9 +97,12 @@ $array = collect($array);
         /*$result = $collection_api_result->groupBy (fn ($item) => $item['genres'][0]['name']*/
         /*  }*/
         /* )*/
-       return $api_elements;
+       return  collect($api_elements);
        
 
     }
+
+
+    
 
 }

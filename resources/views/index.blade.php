@@ -32,9 +32,9 @@
             <img src={{$item['background_image']}} class="card-img-top" alt="Game image">
             <p class="card-text">{{$item['rating']}}</p>
             <h5 class="card-title">{{$item['name']}}</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the</p>
-            <a href="#" class="btn btn-primary">Read More</a>
-            <input  class ="game_name" name="game_name" type="checkbox" id="animationTrigger"  value={{$item['name']}}/>
+            <p class="card-text">Get to know more click on the button</p>
+            <a href="#" class="btn btn-primary"><input  type="button" placeholder="See more" value= {{$item['slug']}}/></a>
+            <input  class ="game_name" name="game_name" type="checkbox"   value={{$item['name']}}/>
 
         </div>
     </div>
@@ -42,26 +42,7 @@
   
 @endforeach
           
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Card 2</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the</p>
-                    <a href="#" class="btn btn-primary">Read More</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Card 3</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the</p>
-                    <a href="#" class="btn btn-primary">Read More</a>
-                </div>
-            </div>
-        </div>
-    </div>
+       
 </div>
 <h2>Try our set made by our developers</h2>
 @if ($games_count == 0)
