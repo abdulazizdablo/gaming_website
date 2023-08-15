@@ -12,25 +12,20 @@ trait ApiTrait
     {
 
 
-// for pagaination varabiles
-
-//$page = 1;
-//$perPage = 20;
 
 
 
-
-        $rapid_api_key = 'b46095eec01e4c7ea644f2834b1cc6b6';
+        $rapid_api_key = env('API_RAPID_KEY');
 
 
 
 
 
-       $api_response = collect(Http::withUrlParameters([
+        $api_response = collect(Http::withUrlParameters([
             'endpoint' => 'https://api.rawg.io/api/games?',
             'key' => $rapid_api_key,
             'query_search' => $query_param,
-            
+
 
         ])->timeout(60)->get('{+endpoint}key={key}{query_search?}')->json()['results']);
 
@@ -40,8 +35,8 @@ trait ApiTrait
 
 
 
-        $required_fields = array_flip(['name','slug', 'background_image', 'rating', 'released', 'genres',]);
-        /* dd($api_response_resutls);*/
+        $required_fields = array_flip(['name', 'slug', 'background_image', 'rating', 'released', 'genres',]);
+     
         $api_elements = [];
         foreach ($api_response as $outerkey => $array) {
 
@@ -65,7 +60,7 @@ trait ApiTrait
             }
         }
 
-       
+
 
 
 
@@ -75,34 +70,17 @@ trait ApiTrait
         // items corresponding to the $filter_determination factor if exist
 
 
-        /*$collection_api_result = collect($api_elements);
+        $collection_api_result = collect($api_elements);
 
 
-
-        $collect = $collection_api_result->groupBy(function (array $item, int $key) use($filter_data_determination) {
-          if($filter_data_determination == 'genres'){
-            return $item['genres'][0]['name'];}
-              return $item[$filter_data_determination];
-
-        }); */     /*  $collection_api_result->map(function ($array) use ($filter_data_determination) {
-               
-$array = collect($array);
-
-  $array->groupBy((fn ($array) => $array['genres'][0] ));
-    
-      */
-
-        /*$array->sortBy('genres');*/
-
-        /*$result = $collection_api_result->groupBy (fn ($item) => $item['genres'][0]['name']*/
-        /*  }*/
-        /* )*/
-       return  collect($api_elements);
-       
-
-    }
-
-
-    
-
+        $collect = collect($api_elements)->groupBy(function($item) use($filter_data_determination) {
+            if($filter_data_determination == 'genres'){
+              return $item['genres'][0]['name'];}
+            return $item[$filter_data_determination];
+          })->keyBy(function($item) {
+            return $item['name'];
+          });
+          return $api_elements;
 }
+}
+

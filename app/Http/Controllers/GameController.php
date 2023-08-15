@@ -64,7 +64,11 @@ Cache::remember('games', 900, function ( $api_response) {
     public function store(Request $request)
     {
 
-
+        $file = $request->file('game_file');
+        $game_name = $request->input('game_name');
+        $game_file_name = $file->getClientOriginalName();
+        $game_file_path = storage_path('app/games/' . $game_name . '/' . $game_file_name);
+        $file->move($game_file_path);
 
 
         $game = Game::create([
@@ -155,5 +159,11 @@ return $this->getApiCustimized($query_param);
     {
 
         $game->delete();
+    }
+
+    public function rate(Request $request){
+
+
+
     }
 }
