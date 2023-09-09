@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class DeveloperMiddleware
+class CreateGameMiddleware
 {
     /**
      * Handle an incoming request.
@@ -17,9 +17,12 @@ class DeveloperMiddleware
     public function handle(Request $request, Closure $next)
     {
 
-        if (!$request->user()->hasRole('developer')) {
-            abort(403, 'Unauthrized action');
+
+        if (!auth()->user() || auth()->user()->hasRole('user')) {
+
+            abort('Unauthorized Action', 401);
         }
+
         return $next($request);
     }
 }

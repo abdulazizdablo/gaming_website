@@ -3,47 +3,26 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\SignUpRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use App\Models\User;
-use App\Models\Developer as Developer;
-
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Auth;
-use Spatie\Permission\Traits\HasRoles;
-use Symfony\Component\HttpFoundation\Session\Session as SessionSession;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 
-class AuthinticationController extends Controller
+
+class AuthenticationController extends Controller
 {
-
-    function __construct()
-    {
-
-
-        /* $this->middleware('guest', ['only' => ['register']]);
-        $this->middleware('auth', ['only' => ['login']]);*/
-    }
-
-
     public function index()
     {
         return view('auth.login');
     }
 
-    public function Login(LoginRequest $request)
+    public function login(LoginRequest $request)
     {
-        /*$request->validate([
-            'email' => 'required',
-            'password' => 'required',
-        ]);*/
-
         $credentials = $request->only('email', 'password');
+
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('dashboard')
-                ->withSuccess('Signed in');
+            return redirect()->intended('dashboard')->withSuccess('Signed in');
         }
 
         return redirect("login")->withSuccess('Login details are not valid');
@@ -54,132 +33,63 @@ class AuthinticationController extends Controller
         return view('auth.registration');
     }
 
-    public function Register(Request $request)
+    public function register(RegisterRequest $request)
     {
-
-
-        // specifying $request inputs not using $request->all() for security meassures thus it would be vunlerable to request attacks
-        $data = $request->all();
-
-        /*if (Session::get('role') == 'developer')  
-         {$data = $request->input(['name', 'email', 'password','password_confirmation','image', 'github_account','portfolio', ]);
-        var_dump($request->input(['name', 'email', 'password','password_confirmation','image', 'github_account','portfolio', ]));}
-
-            $data = $request->input(['name', 'email', 'password','image']);*/
-
-
-
-
-        // for security measurres and protection from files hijacking the images name must not be as they
-        // uploaded for example "(car.png) must not be stay as it the sent name"
-        // hence keeping the anonymity for the data is key to protection
-        // here the name is being generated it is string combined of the  Unix time
-        // and image extension
-
-
+        $data = $request->validated();
         $image_name = time() . '.' . $request->image->extension();
         $request->image->storeAs('images', $image_name);
 
-        $check = $this->create($data);
-        return redirect('index')->withMessage("You have signed up");
-    }
-
-    public function create($data)
-    {
-        $user = new User();
-        $user->name = $data['name'];
-        $user->email = $data['email'];
-        $user->image_name = $data['image'];
-        $user->password =  Hash::make($data['password']);
-        $user->save();
-        /*$user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-             'image_name' => $data['image'],
-            'password' => Hash::make($data['password']),
-         ]);*/
-        $user = $user->assignRole(Session::get('role'));
-        if (Session::get('role') == 'developer') {
-
-            $developer = Developer::create([
-
-                'name' => $data['name'],
-
-                'github_account' => $data['github_account'],
-                'portfolio' => $data['portfolio']
-
-            ]);
-        }
-
-
-
-        // using Spatie assignRole to attach the selected role to the registerd user
+        $user = $this->createUser($data, $image_name);
 
         Auth::login($user);
 
+        return redirect('index')->withMessage("You have signed up");
+    }
+
+    private function createUser($data, $image_name)
+    {
+
+
+        $user = 'App\\Models\\' . Session::get('role')::create(
+            array_merge(
+                $data,
+                ['image' => $image_name, 'password' => bcrypt($data['password'])]
+            )
+
+        );
+
+
+        $user->assignRole(Session::get('role'));
         return $user;
     }
 
-    /* public function dashboard()
-    {
-        if (Auth::check()) {
-            return view('dashboard');
-        }
 
-        return redirect("login")->withSuccess('You are not allowed to access');
-    }*/
+
+
     public function createStepOneForm()
     {
-
-        return view('regestration.create');
+        return view('registration.create');
     }
 
     public function stepOneForm(Request $request)
     {
-        $role = session(['role' => $request->role]);
+        session(['role' => $request->role]);
         return redirect('/register');
     }
+
     public function createStepTwoForm()
     {
-
         if (Session::get('role') == 'developer') {
-
             return view('auth.second_form_developer');
         } else {
-
-            return  view('auth.second_form_user');
+            return view('auth.second_form_user');
         }
     }
-   /* public function stepTwoForm(Request $request)
-    {
-
-
-
-        // specifying $request inputs not using $request->all() for security meassures thus it would be vunlerable to request attacks
-
-
-        $data = $request->input(['first_name', 'last_name', 'email', 'password', 'roles']);
-
-        // for security measurres and protection from files hijacking the images name must not be as they
-        // uploaded for example "(car.png) must not be stay as it the sent name"
-        // hence keeping the anonymity for the data is key to protection
-        // here the name is being generated it is string combined of the  Unix time
-        // and image extension
-
-
-        $image_name = time() . '.' . $request->image->extension();
-        $request->image->storeAs('images', $image_name);
-
-        $check = $this->create($data);
-
-        return redirect("dashboard")->withSuccess('You have signed-in');
-    }*/
 
     public function signOut()
     {
         Session::flush();
         Auth::logout();
-
         return Redirect('login');
     }
 }

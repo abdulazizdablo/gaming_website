@@ -8,8 +8,12 @@ use Illuminate\Support\Facades\Http;
 trait ApiTrait
 {
 
-    public function getApiCustimized(string $filter_data_determination = null, string $query_param = null)
+    public function getApiCustimized( string $query_param = null)
     {
+
+
+
+
 
 
 
@@ -31,12 +35,8 @@ trait ApiTrait
 
 
 
-
-
-
-
         $required_fields = array_flip(['name', 'slug', 'background_image', 'rating', 'released', 'genres',]);
-     
+
         $api_elements = [];
         foreach ($api_response as $outerkey => $array) {
 
@@ -59,28 +59,25 @@ trait ApiTrait
                 }
             }
         }
+        return $api_elements;
+    }
+
+public function filterApiElements(string $filter_data_determination){
 
 
 
-
-
-
-        // adding filter feature to api respone elements which is multidimensional array
-        // this functionality will make a collection and iterate over nested items to order
-        // items corresponding to the $filter_determination factor if exist
-
-
-        $collection_api_result = collect($api_elements);
-
-
-        $collect = collect($api_elements)->groupBy(function($item) use($filter_data_determination) {
-            if($filter_data_determination == 'genres'){
-              return $item['genres'][0]['name'];}
+        $collection_api_result = collect($api_elements)->groupBy(function ($item) use ($filter_data_determination) {
+            if ($filter_data_determination == 'genres') {
+                return $item['genres'][0]['name'];
+            }
             return $item[$filter_data_determination];
-          })->keyBy(function($item) {
+        })->keyBy(function ($item) {
             return $item['name'];
-          });
-          return $api_elements;
-}
-}
+        });
+
+        return  $collection_api_result;
+    }
+      
+    
+    }
 

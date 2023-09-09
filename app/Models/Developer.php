@@ -23,7 +23,7 @@ class Developer extends Model
      'github_account',
      'portfolio'];
 
-    public function game()
+    public function games()
     {
 
         return $this->hasMany(Games::class);

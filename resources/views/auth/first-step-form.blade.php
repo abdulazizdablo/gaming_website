@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <!DOCTYPE html>
     <html lang="en">
 
@@ -22,7 +22,6 @@
                         <div class="card-body">
                             <h5 class="card-title">Are you developer</h5>
                             <p class="card-text">You can easily upload your developed games and and could be bought</p>
-                            <a href="{{ route('register.show') }}" class="btn btn-primary">Sign up</a>
                         </div>
                         <div class="form-check">
                             <input required name="role" class="form-check-input" type="radio"value="developer"
@@ -38,7 +37,6 @@
                         <div class="card-body">
                             <h5 class="card-title">Or a game loving user</h5>
                             <p class="card-text">create account to get latest news on games and buy the best of them</p>
-                            <a href={{ route('register.store') }} class="btn btn-primary">Sign up</a>
                         </div>
                         <div class="form-check">
                             <input required name="role" class="form-check-input" type="radio" value="user"
@@ -50,8 +48,7 @@
                     </div>
                 </div>
             </div>
-             <input class="btn btn-primary" type="submit" name="form-submit"
-                    >
+            <input class="btn btn-primary" type="submit" name="form-submit">
         </form>
     </body>
 
