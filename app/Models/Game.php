@@ -32,6 +32,13 @@ class Game extends Model
 
         return $this->belongsTo(User::class);
     }
+
+    public function wishlist()
+    {
+        return $this->belongsToMany(Game::class, 'wishlist', 'user_id', 'game_id');
+    }
+    
+
     public function review()
     {
 

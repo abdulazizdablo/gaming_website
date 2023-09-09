@@ -57,9 +57,7 @@ class GameController extends Controller
 
     public function update(UpdateGameRequest $request, Game $game)
     {
-        if (!$this->canModifyGame($game)) {
-            return redirect()->back()->withMessage("You are not privileged to modify this game.");
-        }
+    
 
         $game->update($request->validated());
     }
@@ -69,10 +67,7 @@ class GameController extends Controller
         $game->delete();
     }
 
-    private function canModifyGame(Game $game)
-    {
-        return in_array($game->name, Auth::user()->games_developed->pluck('name')->toArray());
-    }
+  
 
     public function filterApiElements(string $filterDataDetermination)
     {

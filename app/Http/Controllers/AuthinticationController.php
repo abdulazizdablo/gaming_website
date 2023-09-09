@@ -64,8 +64,6 @@ class AuthenticationController extends Controller
     }
 
 
-
-
     public function createStepOneForm()
     {
         return view('registration.create');
@@ -74,7 +72,7 @@ class AuthenticationController extends Controller
     public function stepOneForm(Request $request)
     {
         session(['role' => $request->role]);
-        return redirect('/register');
+        return redirect('register');
     }
 
     public function createStepTwoForm()
